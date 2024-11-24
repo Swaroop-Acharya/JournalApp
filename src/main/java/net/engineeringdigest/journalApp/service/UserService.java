@@ -55,4 +55,10 @@ public class UserService {
         return Optional.ofNullable(userRepository.findByUserName(userName));
     }
 
+    public void createAdminUser(User user){
+        user.setRoles(Arrays.asList("USER","ADMIN"));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
 }

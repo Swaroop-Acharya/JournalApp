@@ -21,7 +21,9 @@ public class SpirngSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/journal/api/**","/api/user/**").authenticated()
+        http.authorizeRequests()
+                .antMatchers("/journal/api/**","/api/user/**").authenticated()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .httpBasic();
