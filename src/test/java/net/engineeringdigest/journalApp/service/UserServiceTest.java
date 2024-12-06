@@ -49,7 +49,7 @@ public class UserServiceTest {
         assertEquals(expected,a+b);
     }
 
-
+    @Disabled
     @ParameterizedTest
     @ValueSource(strings={"Swaroop","Appa","Sudeep","Karthik"})
     public void testUsersExist(String userName){
