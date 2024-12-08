@@ -55,4 +55,6 @@ public class UserServiceTest {
     public void testUsersExist(String userName){
         assertNotNull(userRepository.findByUserName(userName),"Failed for :"+userName);
     }
+
+
 }
