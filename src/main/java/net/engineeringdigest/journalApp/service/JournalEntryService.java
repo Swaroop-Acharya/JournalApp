@@ -1,19 +1,24 @@
 package net.engineeringdigest.journalApp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import net.engineeringdigest.journalApp.entity.JournalEntry;
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.exception.UserNotFoundException;
 import net.engineeringdigest.journalApp.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
+@Slf4j
+
 public class JournalEntryService {
 
     @Autowired
@@ -22,11 +27,13 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
+    @Cacheable(key = "#userName" ,value = "entriesOfUser")
     public List<JournalEntry> getEntriesOfUser(String userName) throws UserNotFoundException{
         Optional<User> userInDb= userService.findByUserName(userName);
         if(!userInDb.isPresent()){
             throw new UserNotFoundException("User not found with the User name: "+ userName);
         }
+        log.info("Getting the data from db");
         return userInDb.get().getJournalEntries();
     }
 
@@ -46,6 +53,7 @@ public class JournalEntryService {
     public Optional<JournalEntry> findEntryById(ObjectId id){
         return journalEntryRepository.findById(id);
     }
+
 
     public boolean deleteEntryById(ObjectId id){
         Optional<JournalEntry> entry = journalEntryRepository.findById(id);

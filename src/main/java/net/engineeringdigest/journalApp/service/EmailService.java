@@ -6,6 +6,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
@@ -17,11 +18,18 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendMail(String to, String subject, String body){
+//    @Scheduled(cron = "0 0/1 * 1/1 * ?")
+    public void sendMail(){
+       String to="swaroopa802@gmail.com",subject="Hi",body="Boy hi";
+       sendEmail(to,subject,body);
+    }
+
+
+    public void sendEmail(String to, String subject, String body){
         try{
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setTo(to);
-            simpleMailMessage.setSubject(to);
+            simpleMailMessage.setSubject(subject);
             simpleMailMessage.setText(body);
             javaMailSender.send(simpleMailMessage);
         }catch (Exception e){
