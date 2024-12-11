@@ -16,6 +16,7 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 public class JournalEntry implements Serializable {
+    private static final long serialVersionUID=1L;
 
     @Id
     private ObjectId id;
