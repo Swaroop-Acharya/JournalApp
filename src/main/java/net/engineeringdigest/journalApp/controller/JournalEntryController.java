@@ -66,12 +66,12 @@ public class JournalEntryController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<?> updateEntry(@PathVariable ObjectId id, @RequestBody JournalEntry updatedEntry){
+    public ResponseEntity<?> updateEntry(@PathVariable String id, @RequestBody JournalEntry updatedEntry){
         try{
             Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
             String userName = authentication.getName();
-           journalEntryService.updateEntry(id,userName,updatedEntry);
-            return new ResponseEntity<>(updatedEntry,HttpStatus.OK);
+            ObjectId objectId= new ObjectId(id);
+            return new ResponseEntity<>(journalEntryService.updateEntry(objectId,userName,updatedEntry),HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
