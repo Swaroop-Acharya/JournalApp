@@ -9,21 +9,20 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class RabbitMQReceiver {
+public class RabbitMQReceiver1 {
 
     @Autowired
     private EmailService emailService;
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NAME)
-    public void receiveMessage(Email email){
+    public void sendMessage1(Email email){
         try{
             log.info("{}this mail work will be handled by{}", email.getTo(), getClass());
-            Thread.sleep(10000);
+            Thread.sleep(5000);
             emailService.sendEmail(email.getTo(),email.getSubject(),email.getBody());
             log.info("Mail sent to the customer{}", getClass());
-        }catch (Exception e){
-            log.error("Something went wrong while procesing the send mail at consumer level");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
-
 }
